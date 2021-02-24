@@ -1,8 +1,10 @@
 # LilyGo-EPD-4-7-OWM-Weather-Display
 Using the LilyGo EPD 4.7" display to show OWM Weather Data
 
-
 Version 2.6 Added real moon image with moon phase overlay.
+
+Select board type: 'ESP32 Dwev Module'
+Ensure 'PSRAM' is Enabled
 
 Creating images:
 
