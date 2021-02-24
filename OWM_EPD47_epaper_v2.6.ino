@@ -24,7 +24,7 @@
 #define SCREEN_HEIGHT  EPD_HEIGHT
 
 //################  VERSION  ##################################################
-String version = "2.5 / 4.7in";  // Programme version, see change log at end
+String version = "2.6 / 4.7in";  // Programme version, see change log at end
 //################ VARIABLES ##################################################
 
 enum alignment {LEFT, RIGHT, CENTER};
