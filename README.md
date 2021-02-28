@@ -9,6 +9,8 @@ Version 2.71
 5. Added Feels-Like temperature if wind speed > 0
 6. Now now uses LAT/LON for weather location needed for the onecall API call, infact all OWM API calls are better supported with LAT/LON
 7. Added one mopre forecast period, so now displays 24-hours ahead
+8. *** NOTE: You need to update **forecast_record.h and owm_credentials.h** from here
+9. Add sunset.h, sunrise,h and moon.h to the sketch folder
 
 Select board type: 'ESP32 Dev Module'
 Ensure 'PSRAM' is Enabled
