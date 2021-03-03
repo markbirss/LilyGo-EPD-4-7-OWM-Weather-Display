@@ -1,6 +1,10 @@
 # LilyGo-EPD-4-7-OWM-Weather-Display
 Using the LilyGo EPD 4.7" display to show OWM Weather Data
 
+Version 2.72
+1. Improved Icon shapes and positioning
+2. Adjusted Forecast Weather function to improve readability
+
 Version 2.71
 1. Which implemented OWM onecall API
 2. Improved all weather icons
