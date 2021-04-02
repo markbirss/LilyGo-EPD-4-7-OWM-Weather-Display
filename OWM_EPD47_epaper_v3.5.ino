@@ -308,7 +308,7 @@ int JulianDate(int d, int m, int y) {
 
 float SumOfPrecip(float DataArray[], int readings) {
   float sum = 0;
-  for (int i = 0; i <= readings; i++) sum += DataArray[i];
+  for (int i = 0; i < readings; i++) sum += DataArray[i];
   return sum;
 }
 
