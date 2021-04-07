@@ -1,6 +1,27 @@
 # LilyGo-EPD-4-7-OWM-Weather-Display
 Using the LilyGo EPD 4.7" display to show OWM Weather Data
 
+*** For the latest version please use 'contact' at www.dsbiird.org.uk for the latest version ***
+Sorry but due to piracy I'm no-longer releasing a new version for public use
+
+Version 3.6
+1. Improved graphing routine
+2. Added Dewpoint display
+3. Used OWM 'Onecall' to get additonal data
+4. Improved wind display and corrected Metric and Imperial displays
+5. Improved Imperial time displays
+6. Improved top-status line alignment and overall look
+7. Corrected rainfal / snowfall counting
+8. Changed wind direction from 'wind direction from' to 'wind direction to', so now the arrow points to where the wind is blowing towards
+9. Added indicator of incomplete forecast, sleep time adjusted to get forecast quicker
+10. Changed forecast time regions
+11. Fixed UVI index display
+12. Fixed rain/snow fall predictions
+13. Fixed large and small weather icons
+14. Revised all weather icon alignment
+15. Corrected Hi/Lo temperature capture function
+16. Corrected and rationalised all weather reception codes
+
 Version 2.72
 1. Improved Icon shapes and positioning
 2. Adjusted Forecast Weather function to improve readability
@@ -12,7 +33,7 @@ Version 2.71
 4. Added UV index and icon
 5. Added Feels-Like temperature if wind speed > 0
 6. Now now uses LAT/LON for weather location needed for the onecall API call, infact all OWM API calls are better supported with LAT/LON
-7. Added one mopre forecast period, so now displays 24-hours ahead
+7. Added one more forecast period, so now displays 24-hours ahead
 8. *** NOTE: You need to update **forecast_record.h and owm_credentials.h** from here
 9. Add sunset.h, sunrise,h and moon.h to the sketch folder
 
