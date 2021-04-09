@@ -4,6 +4,15 @@ Using the LilyGo EPD 4.7" display to show OWM Weather Data
 *** For the latest version please use 'contact' at www.dsbird.org.uk for the latest version ***
 Sorry but due to piracy I'm no-longer releasing a new version for public use
 
+Version 3.8
+1. Corrected JSON decoding
+2. Used last known forecast when not yet published on day-5
+3. When forecast incompleted, added indicator *
+4. Add rain / snow reports, displayed when imminent (next 3-hours)
+
+Version 3.7
+1. Improved Imperial units and time displaying
+
 Version 3.6
 1. Improved graphing routine
 2. Added Dewpoint display
