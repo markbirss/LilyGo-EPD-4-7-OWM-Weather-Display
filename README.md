@@ -3,7 +3,7 @@ Using the LilyGo EPD 4.7" display to show OWM Weather Data
 
 For the latest version please use 'contact' at www.dsbird.org.uk for the latest version
 
-<b>*** Sorry but due to piracy and especially the non-attribution of some individuals I'm no-longer releasing a new version for public use ***</b>
+<b>*** Sorry but due to piracy and non-attribution by some individuals I'm no-longer releasing a new version for public use ***</b>
 
 Version 3.8
 1. Corrected JSON decoding
