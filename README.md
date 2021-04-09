@@ -1,4 +1,4 @@
-# LilyGo-EPD-4-7-OWM-Weather-Display
+# G6EJD LilyGo-EPD-4-7-OWM-Weather-Display
 Using the LilyGo EPD 4.7" display to show OWM Weather Data
 
 For the latest version please use 'contact' at www.dsbird.org.uk for the latest version
