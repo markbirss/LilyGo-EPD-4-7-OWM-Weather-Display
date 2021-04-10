@@ -1,9 +1,17 @@
 # G6EJD LilyGo-EPD-4-7-OWM-Weather-Display
 Using the LilyGo EPD 4.7" display to show OWM Weather Data
 
-For the latest version please use 'contact' at www.dsbird.org.uk for the latest version
+# License
 
-<b>*** Sorry but due to piracy and non-attribution by some individuals I'm no-longer releasing a new version for public use ***</b>
+This code created by https://github.com/G6EJD/ is using the GPLv3 https://github.com/Xinyuan-LilyGO/LilyGo-EPD47 library to handle the display and as such falls into the GPLv3 license itself. This situation is described in the https://www.gnu.org/licenses/gpl-faq.html#IfLibraryIsGPL
+
+> If a library is released under the GPL (not the LGPL), does that mean that any software which uses it has to be under the GPL or a GPL-compatible license?
+
+> Yes, because the program actually links to the library. As such, the terms of the GPL apply to the entire combination. The software modules that link with the library may be under various GPL compatible licenses, but the work as a whole must be licensed under the GPL.
+
+This means that the original proprietary license that G6EJD tried to enforce is unlawful as it is not compatible with the GPLv3.
+
+This fork fixes the problem by setting the correct license for the code while keeping the attribution and all the copyright of the original creator.
 
 Version 3.8
 1. Corrected JSON decoding
