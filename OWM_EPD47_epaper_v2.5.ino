@@ -15,10 +15,13 @@
 #include <WiFi.h> // In-built
 #include <SPI.h>  // In-built
 #include <time.h> // In-built
+#include "SPIFFS.h"
+#include "FS.h"
 
 #include "owm_credentials.h"
 #include "forecast_record.h"
 #include "lang.h"
+#include "web.h"
 
 #define SCREEN_WIDTH EPD_WIDTH
 #define SCREEN_HEIGHT EPD_HEIGHT
@@ -95,8 +98,8 @@ void BeginSleep()
 
 boolean SetupTime()
 {
-    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer, "time.nist.gov"); //(gmtOffset_sec, daylightOffset_sec, ntpServer)
-    setenv("TZ", Timezone, 1);                                                 //setenv()adds the "TZ" variable to the environment with a value TimeZone, only used if set to 1, 0 means no change
+    configTime(gmtOffset_sec, daylightOffset_sec, const_cast<const char *>(ntpServer.c_str()), "time.nist.gov"); //(gmtOffset_sec, daylightOffset_sec, ntpServer)
+    setenv("TZ", const_cast<const char *>(Timezone.c_str()), 1);                                                 //setenv()adds the "TZ" variable to the environment with a value TimeZone, only used if set to 1, 0 means no change
     tzset();                                                                   // Set the TZ environment variable
     delay(100);
     return UpdateLocalTime();
@@ -110,13 +113,13 @@ uint8_t StartWiFi()
     WiFi.mode(WIFI_STA); // switch off AP
     WiFi.setAutoConnect(true);
     WiFi.setAutoReconnect(true);
-    WiFi.begin(ssid, password);
+    WiFi.begin(const_cast<const char *>(ssid.c_str()), const_cast<const char *>(password.c_str()));
     if (WiFi.waitForConnectResult() != WL_CONNECTED)
     {
         Serial.printf("STA: Failed!\n");
         WiFi.disconnect(false);
         delay(500);
-        WiFi.begin(ssid, password);
+        WiFi.begin(const_cast<const char *>(ssid.c_str()), const_cast<const char *>(password.c_str()));
     }
     if (WiFi.status() == WL_CONNECTED)
     {
@@ -139,8 +142,7 @@ void InitialiseSystem()
 {
     StartTime = millis();
     Serial.begin(115200);
-    while (!Serial)
-        ;
+    while (!Serial) ;
     Serial.println(String(__FILE__) + "\nStarting...");
     epd_init();
     framebuffer = (uint8_t *)ps_calloc(sizeof(uint8_t), EPD_WIDTH * EPD_HEIGHT / 2);
@@ -157,40 +159,74 @@ void loop()
 void setup()
 {
     InitialiseSystem();
-    if (StartWiFi() == WL_CONNECTED && SetupTime() == true)
+
+    SPIFFS.begin();
+    pinMode(35, INPUT_PULLUP);
+
+    if ( !digitalRead(35) || !SPIFFS.exists("/config.json") )
     {
-        bool WakeUp = false;
-        if (WakeupHour > SleepHour)
-            WakeUp = (CurrentHour >= WakeupHour || CurrentHour <= SleepHour);
-        else
-            WakeUp = (CurrentHour >= WakeupHour && CurrentHour <= SleepHour);
-        if (WakeUp)
+        setupWEB();
+    }
+    else
+    {
+        StaticJsonDocument<512> json1;
+        File configfile = SPIFFS.open("/config.json", "r");
+        DeserializationError error = deserializeJson(json1, configfile);
+        if (error)
+            Serial.println(F("Failed to read file, using default configuration"));
+        configfile.close();
+
+        ssid = json1["WLAN"]["ssid"].as<String>();
+        password = json1["WLAN"]["password"].as<String>();
+
+        apikey     = json1["OpenWeather"]["apikey"].as<String>();
+        server     = json1["OpenWeather"]["server"].as<String>();
+        Country    = json1["OpenWeather"]["country"].as<String>();
+        City       = json1["OpenWeather"]["city"].as<String>();
+        Hemisphere = json1["OpenWeather"]["hemisphere"].as<String>();
+        Units      = json1["OpenWeather"]["units"].as<String>();
+
+        ntpServer = json1["ntp"]["server"].as<String>();
+        Timezone = json1["ntp"]["timezone"].as<String>();
+
+        // WakeupHour = strtok(json1["schedule_power"]["on_time"].as<const char *>());
+        // SleepHour  = json1["schedule_power"]["off_time"].as<String>();
+
+        if (StartWiFi() == WL_CONNECTED && SetupTime() == true)
         {
-            byte Attempts = 1;
-            bool RxWeather = false;
-            bool RxForecast = false;
-            WiFiClient client; // wifi client object
-            while ((RxWeather == false || RxForecast == false) && Attempts <= 2)
-            { // Try up-to 2 time for Weather and Forecast data
-                if (RxWeather == false)
-                    RxWeather = obtainWeatherData(client, "weather");
-                if (RxForecast == false)
-                    RxForecast = obtainWeatherData(client, "forecast");
-                Attempts++;
-            }
-            Serial.println("Received all weather data...");
-            if (RxWeather && RxForecast)
-            {                       // Only if received both Weather or Forecast proceed
-                StopWiFi();         // Reduces power consumption
-                epd_poweron();      // Switch on EPD display
-                epd_clear();        // Clear the screen
-                DisplayWeather();   // Display the weather data
-                edp_update();       // Update the display to show the information
-                epd_poweroff_all(); // Switch off all power to EPD
+            bool WakeUp = false;
+            if (WakeupHour > SleepHour)
+                WakeUp = (CurrentHour >= WakeupHour || CurrentHour <= SleepHour);
+            else
+                WakeUp = (CurrentHour >= WakeupHour && CurrentHour <= SleepHour);
+            if (WakeUp)
+            {
+                byte Attempts = 1;
+                bool RxWeather = false;
+                bool RxForecast = false;
+                WiFiClient client; // wifi client object
+                while ((RxWeather == false || RxForecast == false) && Attempts <= 2)
+                { // Try up-to 2 time for Weather and Forecast data
+                    if (RxWeather == false)
+                        RxWeather = obtainWeatherData(client, "weather");
+                    if (RxForecast == false)
+                        RxForecast = obtainWeatherData(client, "forecast");
+                    Attempts++;
+                }
+                Serial.println("Received all weather data...");
+                if (RxWeather && RxForecast)
+                {                       // Only if received both Weather or Forecast proceed
+                    StopWiFi();         // Reduces power consumption
+                    epd_poweron();      // Switch on EPD display
+                    epd_clear();        // Clear the screen
+                    DisplayWeather();   // Display the weather data
+                    edp_update();       // Update the display to show the information
+                    epd_poweroff_all(); // Switch off all power to EPD
+                }
             }
         }
+        BeginSleep();
     }
-    BeginSleep();
 }
 
 void Convert_Readings_to_Imperial()

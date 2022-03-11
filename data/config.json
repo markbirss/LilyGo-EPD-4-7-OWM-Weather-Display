@@ -1,0 +1,22 @@
+{
+    "WLAN": {
+        "ssid": "ssid",
+        "password": "password"
+    },
+    "OpenWeather": {
+        "apikey": "45f4d53c6e8d35336a996e1dc26c8390",
+        "server": "api.openweathermap.org",
+        "country": "CN",
+        "city": "shenzhen",
+        "hemisphere": "south",
+        "units": "I"
+    },
+    "ntp": {
+        "server": "0.uk.pool.ntp.org",
+        "timezone": "CST-8"
+    },
+    "schedule_power": {
+        "on_time": "08:00",
+        "off_time": "23:00"
+    }
+}

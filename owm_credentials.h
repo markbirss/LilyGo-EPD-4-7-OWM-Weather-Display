@@ -1,12 +1,12 @@
 const bool DebugDisplayUpdate = false;
 
 // Change to your WiFi credentials
-const char* ssid     = "Your WiFi SSID";
-const char* password = "Your PASSWORD";
+String ssid     = "Your WiFi SSID";
+String password = "Your PASSWORD";
 
 // Use your own API key by signing up for a free developer account at https://openweathermap.org/
 String apikey       = "Your OWM API Key";                      // See: https://openweathermap.org/
-const char server[] = "api.openweathermap.org";
+String server = "api.openweathermap.org";
 //http://api.openweathermap.org/data/2.5/forecast?q=Melksham,UK&APPID=your_OWM_API_key&mode=json&units=metric&cnt=40
 //http://api.openweathermap.org/data/2.5/weather?q=Melksham,UK&APPID=your_OWM_API_key&mode=json&units=metric&cnt=1
 
@@ -19,9 +19,9 @@ String Language         = "EN";                            // NOTE: Only the wea
                                                            // Korean (KR) Latvian (LA) Lithuanian (LT) Macedonian (MK) Slovak (SK) Slovenian (SL) Vietnamese (VI)
 String Hemisphere       = "north";                         // or "south"  
 String Units            = "M";                             // Use 'M' for Metric or I for Imperial 
-const char* Timezone    = "GMT0BST,M3.5.0/01,M10.5.0/02";  // Choose your time zone from: https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv 
+String Timezone    = "GMT0BST,M3.5.0/01,M10.5.0/02";  // Choose your time zone from: https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv 
                                                            // See below for examples
-const char* ntpServer   = "0.uk.pool.ntp.org";             // Or, choose a time server close to you, but in most cases it's best to use pool.ntp.org to find an NTP server
+String ntpServer   = "0.uk.pool.ntp.org";             // Or, choose a time server close to you, but in most cases it's best to use pool.ntp.org to find an NTP server
                                                            // then the NTP system decides e.g. 0.pool.ntp.org, 1.pool.ntp.org as the NTP syem tries to find  the closest available servers
                                                            // EU "0.europe.pool.ntp.org"
                                                            // US "0.north-america.pool.ntp.org"
