@@ -4,7 +4,7 @@
         "password": "password"
     },
     "OpenWeather": {
-        "apikey": "45f4d53c6e8d35336a996e1dc26c8390",
+        "apikey": "",
         "server": "api.openweathermap.org",
         "country": "CN",
         "city": "shenzhen",

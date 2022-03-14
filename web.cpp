@@ -12,6 +12,7 @@
 
 static WebServer server(80);
 
+void storeConfig();
 
 void handleRoot()
 {
@@ -33,66 +34,9 @@ void handleSettings()
 
 void handleConfig()
 {
-    StaticJsonDocument<512> doc;
+    storeConfig();
 
-    File configfile = SPIFFS.open("/config.json", "r");
-    DeserializationError error = deserializeJson(doc, configfile);
-    if (error)
-        Serial.println(F("Failed to read file, using default configuration"));
-    configfile.close();
-
-    for ( uint8_t i = 0; i < server.args(); i++ )
-    {
-        if (server.argName(i).equals("ssid"))
-        {
-            doc["WLAN"]["ssid"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("password"))
-        {
-            doc["WLAN"]["password"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("apikey"))
-        {
-            doc["OpenWeather"]["apikey"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("server"))
-        {
-            doc["OpenWeather"]["server"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("country"))
-        {
-            doc["OpenWeather"]["country"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("city"))
-        {
-            doc["OpenWeather"]["city"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("hemisphere"))
-        {
-            doc["OpenWeather"]["hemisphere"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("units"))
-        {
-            doc["OpenWeather"]["units"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("ntp_server"))
-        {
-            doc["ntp"]["server"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("ntp_timezone"))
-        {
-            doc["ntp"]["timezone"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("on_time"))
-        {
-            doc["schedule_power"]["on_time"] = server.arg(i);
-        }
-        else if (server.argName(i).equals("off_time"))
-        {
-            doc["schedule_power"]["off_time"] = server.arg(i);
-        }
-    }
-
+    // server.send(302, "text/html");
     File htmlfile = SPIFFS.open("/config.html", "r");
     if (!htmlfile)
     {
@@ -100,19 +44,6 @@ void handleConfig()
     }
     server.streamFile(htmlfile, "text/html");
     htmlfile.close();
-
-    configfile = SPIFFS.open("/config.json", FILE_WRITE);
-    if (!configfile)
-    {
-        Serial.println("file error");
-    }
-    if (serializeJson(doc, configfile) == 0)
-    {
-        Serial.println(F("Failed to write to file"));
-    }
-    configfile.close();
-
-    // ESP.restart();
 }
 
 
@@ -172,6 +103,13 @@ void setupWEB(void)
         file.close();
         return;
     });
+    server.on("/restart", HTTP_GET, []() {
+        server.send(200);
+        delay(1000);
+        ESP.restart();
+        return;
+    });
+
     server.onNotFound(handleNotFound);
 
     server.begin();
@@ -182,4 +120,76 @@ void setupWEB(void)
 }
 
 
+void storeConfig()
+{
+    StaticJsonDocument<1024> doc;
 
+    File configfile = SPIFFS.open("/config.json", "r");
+    DeserializationError error = deserializeJson(doc, configfile);
+    if (error)
+        Serial.println(F("Failed to read file, using default configuration"));
+    configfile.close();
+
+    for ( uint8_t i = 0; i < server.args(); i++ )
+    {
+        if (server.argName(i).equals("ssid"))
+        {
+            doc["WLAN"]["ssid"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("password"))
+        {
+            doc["WLAN"]["password"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("apikey"))
+        {
+            doc["OpenWeather"]["apikey"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("server"))
+        {
+            doc["OpenWeather"]["server"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("country"))
+        {
+            doc["OpenWeather"]["country"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("city"))
+        {
+            doc["OpenWeather"]["city"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("hemisphere"))
+        {
+            doc["OpenWeather"]["hemisphere"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("units"))
+        {
+            doc["OpenWeather"]["units"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("ntp_server"))
+        {
+            doc["ntp"]["server"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("ntp_timezone"))
+        {
+            doc["ntp"]["timezone"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("on_time"))
+        {
+            doc["schedule_power"]["on_time"] = server.arg(i);
+        }
+        else if (server.argName(i).equals("off_time"))
+        {
+            doc["schedule_power"]["off_time"] = server.arg(i);
+        }
+    }
+
+    configfile = SPIFFS.open("/config.json", FILE_WRITE);
+    if (!configfile)
+    {
+        Serial.println("file error");
+    }
+    if (serializeJson(doc, configfile) == 0)
+    {
+        Serial.println(F("Failed to write to file"));
+    }
+    configfile.close();
+}
