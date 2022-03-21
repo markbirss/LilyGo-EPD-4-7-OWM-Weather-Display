@@ -76,13 +76,14 @@ def DisplayGeneralInfoSection(weather):
     drawString(5, 2, weather["name"], LEFT)
     setFont(FiraSansRegular8pt)
     now_utc = localtime(weather["dt"] + weather["timezone"])
+    print(now_utc)
     try:
-        drawString(500, 2, "{}, {} {} {}  @   {}:{}:{}".format(
+        drawString(500, 2, "{:s}, {:0>2d} {:s} {:0>4d}  @   {:0>2d}:{:0>2d}:{:0>2d}".format(
                     weekday_D[now_utc.tm_wday], now_utc.tm_mday, now_utc.tm_mon,
                     now_utc.tm_year, now_utc.tm_hour, now_utc.tm_min,
                     now_utc.tm_sec), LEFT)
     except:
-        drawString(500, 2, "{}, {} {} {}  @   {}:{}:{}".format(
+        drawString(500, 2, "{:s}, {:0>2d} {:s} {:0>4d}  @   {:0>2d}:{:0>2d}:{:0>2d}".format(
                     weekday_D[now_utc[6]], now_utc[2], month_M[now_utc[1]],
                     now_utc[0], now_utc[3], now_utc[4], now_utc[5]), LEFT)
 

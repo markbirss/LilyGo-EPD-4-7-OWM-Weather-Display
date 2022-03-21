@@ -1,15 +1,15 @@
 {
     "WLAN": {
-        "ssid": "",
-        "password": ""
+        "ssid": "ssid",
+        "password": "password"
     },
     "OpenWeather": {
         "apikey": "",
         "server": "api.openweathermap.org",
         "country": "CN",
         "city": "shenzhen",
-        "hemisphere": "south",
-        "units": "I"
+        "hemisphere": "north",
+        "units": "M"
     },
     "ntp": {
         "server": "0.uk.pool.ntp.org",

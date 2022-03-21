@@ -19,6 +19,9 @@ ampy -p $port put lang.py ;
 ampy -p $port put main.py ;
 ampy -p $port put ui.py ;
 ampy -p $port put urequests.py ;
+ampy -p $port put web.py ;
+ampy -p $port put www;
+ampy -p $port put lib;
 ```
 
 - Linux
@@ -35,5 +38,8 @@ ampy -p $port put framebuf1.py && \
 ampy -p $port put lang.py && \
 ampy -p $port put main.py && \
 ampy -p $port put ui.py && \
-ampy -p $port put urequests.py
+ampy -p $port put urequests.py && \
+ampy -p $port put web.py && \
+ampy -p $port put www && \
+ampy -p $port put lib;
 ```

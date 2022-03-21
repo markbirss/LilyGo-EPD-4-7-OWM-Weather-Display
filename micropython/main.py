@@ -49,22 +49,6 @@ forcast = None
 max_readings = const(24)
 Language = "EN"
 
-f = open("config.json", "r")
-config = load(f)
-
-ssid = config["WLAN"]["ssid"]
-password = config["WLAN"]["password"]
-
-apikey     = config["OpenWeather"]["apikey"]
-server     = config["OpenWeather"]["server"]
-Country    = config["OpenWeather"]["country"]
-City       = config["OpenWeather"]["city"]
-Hemisphere = config["OpenWeather"]["hemisphere"]
-Units      = config["OpenWeather"]["units"]
-
-ntpServer = config["ntp"]["server"]
-Timezone = config["ntp"]["timezone"]
-
 def StartWiFi():
     global wifi_signal
     print("\r\nConnecting to: {}".format(ssid))
@@ -147,15 +131,40 @@ def BeginSleep():
 
 
 if __name__ == "__main__":
-    from ui import InitUI, DisplayWeather
+    import ui
     import gc
+    from web import setupWEB
     adc = ADC(Pin(36))
-
+    boot = Pin(35, Pin.IN)
     gc.enable()
+
+    if boot.value() == 0:
+        while True:
+            setupWEB()
+
+    f = open("config.json", "r")
+    config = load(f)
+    f.close()
+
+    ssid = config["WLAN"]["ssid"]
+    password = config["WLAN"]["password"]
+
+    apikey     = config["OpenWeather"]["apikey"]
+    server     = config["OpenWeather"]["server"]
+    Country    = config["OpenWeather"]["country"]
+    City       = config["OpenWeather"]["city"]
+    Hemisphere = config["OpenWeather"]["hemisphere"]
+    Units      = config["OpenWeather"]["units"]
+
+    ntpServer = config["ntp"]["server"]
+    Timezone = config["ntp"]["timezone"]
+
     buffer = [ 0 for i in range(0, int(960 * 540 / 2)) ]
     fb = FrameBuffer(buffer, 960, 540)
     fb.fill(255)
-    InitUI(fb)
+    ui.InitUI(fb)
+    ui.Units = Units
+    ui.Hemisphere = Hemisphere
 
     #if StartWiFi() == network.STAT_GOT_IP  and SetupTime() == True:
     if StartWiFi() == network.STAT_GOT_IP:
@@ -178,9 +187,9 @@ if __name__ == "__main__":
                 RxForecast = obtainWeatherData("forecast")
             Attempts += 1
         print("Received all weather data...")
-            
+
         if RxWeather and RxForecast:
-            DisplayWeather(weather, forcast, wifi_signal, adc.read()/4096.0 * 5)
+            ui.DisplayWeather(weather, forcast, wifi_signal, adc.read()/4096.0 * 5)
             try:
                 from epd import EPD47
                 e = EPD47()
