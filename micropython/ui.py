@@ -85,7 +85,7 @@ def DisplayGeneralInfoSection(weather):
     except:
         drawString(500, 2, "{:s}, {:0>2d} {:s} {:0>4d}  @   {:0>2d}:{:0>2d}:{:0>2d}".format(
                     weekday_D[now_utc[6]], now_utc[2], month_M[now_utc[1]],
-                    now_utc[0], now_utc[3], now_utc[4], now_utc[5]), LEFT)
+                    now_utc[0] - 30, now_utc[3], now_utc[4], now_utc[5]), LEFT)
 
 
 def DisplayDisplayWindSection(x, y, angle, windspeed, Cradius, units):
