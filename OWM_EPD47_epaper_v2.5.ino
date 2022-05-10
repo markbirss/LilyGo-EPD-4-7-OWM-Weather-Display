@@ -594,6 +594,8 @@ void DisplayConditionsSection(int x, int y, String IconName, bool IconSize) {
 }
 
 void arrow(int x, int y, int asize, float aangle, int pwidth, int plength) {
+  aangle = aangle +180;
+  if (aangle >=360){aangle = aangle -360;}
   float dx = (asize - 10) * cos((aangle - 90) * PI / 180) + x; // calculate X position
   float dy = (asize - 10) * sin((aangle - 90) * PI / 180) + y; // calculate Y position
   float x1 = 0;         float y1 = plength;
