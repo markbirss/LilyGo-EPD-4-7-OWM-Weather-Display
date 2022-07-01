@@ -154,16 +154,23 @@ void InitialiseSystem()
 void loop()
 {
     // Nothing to do here
+    delay(1000);
 }
+
+#if CONFIG_IDF_TARGET_ESP32
+#define USR_BUTTON 35
+#elif CONFIG_IDF_TARGET_ESP32S3
+#define USR_BUTTON 21
+#endif
 
 void setup()
 {
     InitialiseSystem();
 
     SPIFFS.begin();
-    pinMode(35, INPUT_PULLUP);
+    pinMode(USR_BUTTON, INPUT_PULLUP);
 
-    if ( !digitalRead(35) || !SPIFFS.exists("/config.json") )
+    if ( !digitalRead(USR_BUTTON) || !SPIFFS.exists("/config.json") )
     {
         setupWEB();
     }
@@ -255,13 +262,13 @@ bool DecodeWeather(WiFiClient &json, String Type)
         // All Serial.println statements are for diagnostic purposes and some are not required, remove if not needed with //
         //WxConditions[0].lon         = root["coord"]["lon"].as<float>();              Serial.println(" Lon: " + String(WxConditions[0].lon));
         //WxConditions[0].lat         = root["coord"]["lat"].as<float>();              Serial.println(" Lat: " + String(WxConditions[0].lat));
-        WxConditions[0].Main0 = root["weather"][0]["main"].as<char *>();
+        WxConditions[0].Main0 = root["weather"][0]["main"].as<const char *>();
         Serial.println("Main: " + String(WxConditions[0].Main0));
-        WxConditions[0].Forecast0 = root["weather"][0]["description"].as<char *>();
+        WxConditions[0].Forecast0 = root["weather"][0]["description"].as<const char *>();
         Serial.println("For0: " + String(WxConditions[0].Forecast0));
         //WxConditions[0].Forecast1   = root["weather"][1]["description"].as<char*>(); Serial.println("For1: " + String(WxConditions[0].Forecast1));
         //WxConditions[0].Forecast2   = root["weather"][2]["description"].as<char*>(); Serial.println("For2: " + String(WxConditions[0].Forecast2));
-        WxConditions[0].Icon = root["weather"][0]["icon"].as<char *>();
+        WxConditions[0].Icon = root["weather"][0]["icon"].as<const char *>();
         Serial.println("Icon: " + String(WxConditions[0].Icon));
         WxConditions[0].Temperature = root["main"]["temp"].as<float>();
         Serial.println("Temp: " + String(WxConditions[0].Temperature));
@@ -315,7 +322,7 @@ bool DecodeWeather(WiFiClient &json, String Type)
             //WxForecast[r].Forecast0         = list[r]["weather"][0]["main"].as<char*>();        Serial.println("For0: " + String(WxForecast[r].Forecast0));
             //WxForecast[r].Forecast1         = list[r]["weather"][1]["main"].as<char*>();        Serial.println("For1: " + String(WxForecast[r].Forecast1));
             //WxForecast[r].Forecast2         = list[r]["weather"][2]["main"].as<char*>();        Serial.println("For2: " + String(WxForecast[r].Forecast2));
-            WxForecast[r].Icon = list[r]["weather"][0]["icon"].as<char *>();
+            WxForecast[r].Icon = list[r]["weather"][0]["icon"].as<const char *>();
             Serial.println("Icon: " + String(WxForecast[r].Icon));
             //WxForecast[r].Description       = list[r]["weather"][0]["description"].as<char*>(); Serial.println("Desc: " + String(WxForecast[r].Description));
             //WxForecast[r].Cloudcover        = list[r]["clouds"]["all"].as<int>();               Serial.println("CCov: " + String(WxForecast[r].Cloudcover)); // in % of cloud cover
@@ -325,7 +332,7 @@ bool DecodeWeather(WiFiClient &json, String Type)
             Serial.println("Rain: " + String(WxForecast[r].Rainfall));
             WxForecast[r].Snowfall = list[r]["snow"]["3h"].as<float>();
             Serial.println("Snow: " + String(WxForecast[r].Snowfall));
-            WxForecast[r].Period = list[r]["dt_txt"].as<char *>();
+            WxForecast[r].Period = list[r]["dt_txt"].as<const char *>();
             Serial.println("Peri: " + String(WxForecast[r].Period));
         }
         //------------------------------------------
