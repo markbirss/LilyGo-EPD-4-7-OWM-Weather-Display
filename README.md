@@ -37,3 +37,16 @@ Using the LilyGo EPD 4.7" display to show OWM Weather Data
 ## TODO
 
 * Schedule Power on/off
+
+
+# FAQ
+
+1. The board uses USB as the JTAG upload port. When printing serial port information on USB_CDC_ON_BOOT configuration needs to be turned on.
+If the port cannot be found when uploading the program or the USB has been used for other functions, the port does not appear.
+Please enter the upload mode manually.
+   1. Connect the board via the USB cable
+   2. Press and hold the BOOT(IO0) button , While still pressing the BOOT(IO0) button, press RST
+   3. Release the RST
+   4. Release the BOOT(IO0) button
+   5. Upload sketch
+
