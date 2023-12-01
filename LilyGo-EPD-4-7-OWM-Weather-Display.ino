@@ -201,13 +201,13 @@ void setup()
 
         if (StartWiFi() == WL_CONNECTED && SetupTime() == true)
         {
-            bool WakeUp = false;
-            if (WakeupHour > SleepHour)
-                WakeUp = (CurrentHour >= WakeupHour || CurrentHour <= SleepHour);
-            else
-                WakeUp = (CurrentHour >= WakeupHour && CurrentHour <= SleepHour);
-            if (WakeUp)
-            {
+            // bool WakeUp = false;
+            // if (WakeupHour > SleepHour)
+            //     WakeUp = (CurrentHour >= WakeupHour || CurrentHour <= SleepHour);
+            // else
+            //     WakeUp = (CurrentHour >= WakeupHour && CurrentHour <= SleepHour);
+            // if (WakeUp)
+            // {
                 byte Attempts = 1;
                 bool RxWeather = false;
                 bool RxForecast = false;
@@ -230,7 +230,7 @@ void setup()
                     edp_update();       // Update the display to show the information
                     epd_poweroff_all(); // Switch off all power to EPD
                 }
-            }
+            // }
         }
         BeginSleep();
     }
