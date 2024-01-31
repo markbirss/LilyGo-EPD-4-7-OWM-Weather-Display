@@ -2,7 +2,7 @@
 
 Using the LilyGo EPD 4.7" display to show OWM Weather Data
 
-[Use video](https://youtu.be/ECVMiUjjzms)
+[Use video](https://youtu.be/uAZpSffkbbc)
 
 ## Flashing
 
