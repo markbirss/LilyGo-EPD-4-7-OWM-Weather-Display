@@ -1,6 +1,6 @@
 # LilyGo-EPD-4-7-OWM-Weather-Display
 
-[How to get started quickly](https://youtu.be/uAZpSffkbbc)
+[How to get started quickly](https://youtu.be/bTdW0QTEK70)
 
 # FAQ
 
