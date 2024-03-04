@@ -157,7 +157,9 @@ void loop()
     delay(1000);
 }
 
-#if CONFIG_IDF_TARGET_ESP32
+#if T5_47_PLUS_V2
+#define USR_BUTTON 21
+#elif CONFIG_IDF_TARGET_ESP32
 #define USR_BUTTON 35
 #elif CONFIG_IDF_TARGET_ESP32S3
 #define USR_BUTTON 21
